@@ -16,31 +16,28 @@ public class Cook {
     }
 
     public boolean containsRaw(){
-        return ctx.inventory().contains(Constants.RAW_ANCHOVIES) | ctx.inventory().contains(Constants.RAW_SHRIMPS);
+        return ctx.inventory().contains(Constants.RAW_ANCHOVIES) || ctx.inventory().contains(Constants.RAW_SHRIMPS);
     }
 
     public void cookFood(){
         SceneObject range = ctx.objects().query().nameMatches("Range").results().nearest();
         System.out.println(range);
 
-        if (range !=null){
+        if (range != null){
             if (range.isVisible() && range.interact("Cook")){
-                Time.sleep(10000, () -> cookingWidgetOpen());
+                Time.sleep(10000, this::cookingWidgetOpen);
                 cookingWidget();
                 Time.sleep(1200, () -> ctx.localPlayer().isAnimating());
                 SkrrtFishnCook.state = State.COOKING;
                 System.out.println("Widget:" + cookingWidget());
             }
-
-
-
-
         }
 
     }
     public boolean cookingWidget(){
-        WidgetChild cookingScreen = ctx.widgets().query().visible().group(270).filter(o -> o.getName().equals("Raw shrimps")).results().first();
+        WidgetChild cookingScreen = ctx.widgets().query().visible().group(270).filter(o -> o.getName().contains("Raw ")).results().first();
         if (cookingScreen != null){
+            cookingScreen.interact();
             return cookingScreen.interact();
         }
         return false;

@@ -4,7 +4,8 @@ public enum State {
     FISHING("Fishing"),
     COOKING("Cooking"),
     BANKING("Banking"),
-    WALKING("Walking");
+    WALKING("Walking"),
+    STARTING("Starting");
 
     private String name;
     State(String name) {

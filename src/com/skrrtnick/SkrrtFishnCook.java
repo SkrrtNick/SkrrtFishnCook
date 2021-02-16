@@ -26,17 +26,17 @@ public class SkrrtFishnCook extends LoopScript {
     private int cookedShrimp, cookedAnchovies;
     private int cookingStartLvl, cookingCurrentLvl, fishingStartLvl, fishingCurrentLvl;
     private long startTime;
-    public static State state;
-    Bank bank = new Bank(getAPIContext());
-    Cook cook = new Cook(getAPIContext());
-    Fish fish = new Fish(getAPIContext());
-    Walk walk = new Walk(getAPIContext());
+    public static State state = State.STARTING;
+    private Bank bank = new Bank(getAPIContext());
+    private Cook cook = new Cook(getAPIContext());
+    private Fish fish = new Fish(getAPIContext());
+    private Walk walk = new Walk(getAPIContext());
 
     @Override
     public boolean onStart(String... strings) {
         startTime = System.currentTimeMillis();
-        fishingStartLvl = getAPIContext().skills().fishing().getCurrentLevel();
-        cookingStartLvl = getAPIContext().skills().cooking().getCurrentLevel();
+        fishingStartLvl = getAPIContext().skills().fishing().getRealLevel();
+        cookingStartLvl = getAPIContext().skills().cooking().getRealLevel();
 
         return true;
     }
@@ -70,7 +70,7 @@ public class SkrrtFishnCook extends LoopScript {
     protected int loop() {
         APIContext ctx = getAPIContext();
 
-        if(ctx.dialogues().canContinue()){
+        if (ctx.dialogues().canContinue()) {
             Time.getHumanReaction();
             ctx.dialogues().selectContinue();
         }
@@ -78,7 +78,7 @@ public class SkrrtFishnCook extends LoopScript {
         if (!fish.hasFishingNet() && Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get())) {
             fish.grabFishingNet();
 
-        } else if (!fish.hasFishingNet() && !Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().getLocation()) && !cook.hasCookedFish()) {
+        } else if (!fish.hasFishingNet() && !Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get()) && !cook.hasCookedFish()) {
             walk.walkToFish();
             fish.grabFishingNet();
 
@@ -86,41 +86,31 @@ public class SkrrtFishnCook extends LoopScript {
             walk.walkToFish();
         }
 
-        if (Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().getLocation()) && fish.hasFishingNet() && !ctx.inventory().isFull() && !ctx.localPlayer().isAnimating()) {
+        if (Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get()) && fish.hasFishingNet() && !ctx.inventory().isFull() && !ctx.localPlayer().isAnimating()) {
             fish.doFishing();
 
 
-        } else if (ctx.inventory().isFull() && !Locations.STOVE.getArea().contains(ctx.localPlayer().getLocation())) {
+        } else if (ctx.inventory().isFull() && !Locations.STOVE.getArea().contains(ctx.localPlayer().get())) {
             walk.walkToStove(ctx);
 
-        } else if (!ctx.localPlayer().isAnimating() && Locations.STOVE.getArea().contains(ctx.localPlayer().getLocation()) && cook.containsRaw()) {
+        } else if (!ctx.localPlayer().isAnimating() && Locations.STOVE.getArea().contains(ctx.localPlayer().get()) && cook.containsRaw()) {
             cook.cookFood();
 
-        } if (!cook.hasRawFish() && ctx.inventory().isFull()){
-            ctx.inventory().dropAllExcept(Constants.SMALL_FISHING_NET,Constants.SHRIMPS,Constants.ANCHOVIES);
+        }
+        if (!cook.hasRawFish() && ctx.inventory().isFull()) {
+            ctx.inventory().dropAllExcept(Constants.SMALL_FISHING_NET, Constants.SHRIMPS, Constants.ANCHOVIES);
 
-        } if (cook.hasCookedFish() && !cook.hasRawFish()){
+        }
+        if (cook.hasCookedFish() && !cook.hasRawFish()) {
             walk.walkToBank();
 
-        } if(Locations.LUMBRIDGE_BANK.getArea().contains(ctx.localPlayer().getLocation()));{
-            if(bank.openBank()){
+        }
+        if (Locations.LUMBRIDGE_BANK.getArea().contains(ctx.localPlayer().get())) {
+            if (bank.openBank()) {
                 bank.depositAll();
             }
         }
         return 800;
 
-
-//        } else if (Constants.STOVE.contains(ctx.localPlayer().getLocation()) && (ctx.inventory().contains(Constants.RAW_ANCHOVIES) || ctx.inventory().contains(Constants.RAW_ANCHOVIES))) {
-//            cook.cookFood(ctx);
-//        }
     }
-
-
-
-//        if (Constants.FISHING_SPOT.contains(ctx.localPlayer().getLocation())) {
-//            System.out.println("We are at the fishing spot.");
-//            }
-//
-
-
 }
