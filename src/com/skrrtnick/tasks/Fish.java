@@ -14,20 +14,30 @@ public class Fish {
         this.ctx = ctx;
     }
 
-    public boolean hasFishingNet() {
-        return ctx.inventory().contains(Constants.SMALL_FISHING_NET);
+    public boolean hasFishingNet(APIContext ctx) {
+
+        System.out.println(ctx.inventory().getCount(Constants.SMALL_FISHING_NET));
+
+        if(ctx.inventory().getCount(Constants.SMALL_FISHING_NET) > 1){
+
+            return ctx.inventory().contains(Constants.SMALL_FISHING_NET);
+
+        }
+        return false;
+
+
     }
 
-
-    public boolean grabFishingNet() {
-        SceneObject fishingNet = ctx.objects().query().named("Small fishing net").actions("Take").reachable().results().nearest();
+    public boolean grabFishingNet(APIContext ctx) {
+        SceneObject fishingNet = ctx.objects().query().named("Small fishing net").actions("Take").results().nearest();
         if (fishingNet != null) {
             fishingNet.click();
             Time.getHumanReaction();
         }
-        return hasFishingNet();
-    }
-    public void doFishing(){
+        return hasFishingNet(ctx);
+        }
+
+    public void doFishing(APIContext ctx){
         NPC fishingSpot = ctx.npcs().query().named("Fishing spot").actions("Net").results().nearest();
         if(fishingSpot!=null && fishingSpot.interact("Net")){
             SkrrtFishnCook.state = State.FISHING;

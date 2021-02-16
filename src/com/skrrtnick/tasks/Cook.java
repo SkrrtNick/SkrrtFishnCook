@@ -15,21 +15,21 @@ public class Cook {
         this.ctx = ctx;
     }
 
-    public boolean containsRaw(){
+    public boolean containsRaw(APIContext ctx){
         return ctx.inventory().contains(Constants.RAW_ANCHOVIES) | ctx.inventory().contains(Constants.RAW_SHRIMPS);
     }
 
-    public void cookFood(){
+    public void cookFood(APIContext ctx){
         SceneObject range = ctx.objects().query().nameMatches("Range").results().nearest();
         System.out.println(range);
 
         if (range !=null){
             if (range.isVisible() && range.interact("Cook")){
-                Time.sleep(10000, () -> cookingWidgetOpen());
-                cookingWidget();
+                Time.sleep(10000, () -> cookingWidgetOpen(ctx));
+                cookingWidget(ctx);
                 Time.sleep(1200, () -> ctx.localPlayer().isAnimating());
                 SkrrtFishnCook.state = State.COOKING;
-                System.out.println("Widget:" + cookingWidget());
+                System.out.println("Widget:" + cookingWidget(ctx));
             }
 
 
@@ -38,7 +38,7 @@ public class Cook {
         }
 
     }
-    public boolean cookingWidget(){
+    public boolean cookingWidget(APIContext ctx){
         WidgetChild cookingScreen = ctx.widgets().query().visible().group(270).filter(o -> o.getName().equals("Raw shrimps")).results().first();
         if (cookingScreen != null){
             return cookingScreen.interact();
@@ -46,14 +46,14 @@ public class Cook {
         return false;
     }
 
-    public boolean hasRawFish(){
+    public boolean hasRawFish(APIContext ctx){
         return ctx.inventory().contains(Constants.RAW_SHRIMPS) | ctx.inventory().contains(Constants.RAW_ANCHOVIES);
     }
-    public boolean hasCookedFish(){
+    public boolean hasCookedFish(APIContext ctx){
         return ctx.inventory().contains(Constants.ANCHOVIES)|ctx.inventory().contains(Constants.SHRIMPS);
     }
 
-    public boolean cookingWidgetOpen(){
+    public boolean cookingWidgetOpen(APIContext ctx){
         return ctx.widgets().query().visible().group(270).filter(o -> o.getName().equals("Raw shrimps")).results().first() != null;
     }
 }

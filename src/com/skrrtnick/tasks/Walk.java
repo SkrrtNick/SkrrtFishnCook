@@ -11,14 +11,14 @@ public class Walk {
         this.ctx = ctx;
     }
 
-    public boolean walkToFish() {
+    public boolean walkToFish(APIContext ctx) {
         if (!Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get())) {
             ctx.webWalking().walkTo(Locations.FISHING_SPOT.getArea().getRandomTile());
         }
         return Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get());
     }
 
-    public void walkToBank() {
+    public void walkToBank(APIContext ctx) {
         if (!Locations.LUMBRIDGE_BANK.getArea().contains(ctx.localPlayer().get())) {
             SkrrtFishnCook.state = State.WALKING;
             ctx.webWalking().walkToBank();

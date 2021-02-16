@@ -11,7 +11,7 @@ public class Bank {
         this.ctx = ctx;
     }
 
-    public boolean openBank() {
+    public boolean openBank(APIContext ctx) {
         if (!ctx.bank().isOpen()) {
             SkrrtFishnCook.state = State.BANKING;
         }
