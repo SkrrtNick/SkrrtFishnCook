@@ -1,4 +1,4 @@
-package data;
+package com.skrrtnick.data;
 
 public class Vars {
     public static long startTime;
