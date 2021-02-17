@@ -1,12 +1,12 @@
-package com.skrrtnick.tasks;
+package com.skrrtnick.fishncook.tasks;
 
 import com.epicbot.api.shared.APIContext;
 import com.epicbot.api.shared.entity.SceneObject;
 import com.epicbot.api.shared.entity.WidgetChild;
 import com.epicbot.api.shared.util.time.Time;
-import com.skrrtnick.SkrrtFishnCook;
-import com.skrrtnick.data.Constants;
-import com.skrrtnick.data.State;
+import com.skrrtnick.fishncook.SkrrtFishnCook;
+import com.skrrtnick.fishncook.data.Constants;
+import com.skrrtnick.fishncook.data.State;
 
 
 public class Cook {

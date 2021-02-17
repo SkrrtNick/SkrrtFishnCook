@@ -1,9 +1,9 @@
-package com.skrrtnick.tasks;
+package com.skrrtnick.fishncook.tasks;
 
 import com.epicbot.api.shared.APIContext;
-import com.skrrtnick.SkrrtFishnCook;
-import com.skrrtnick.data.Constants;
-import com.skrrtnick.data.State;
+import com.skrrtnick.fishncook.SkrrtFishnCook;
+import com.skrrtnick.fishncook.data.Constants;
+import com.skrrtnick.fishncook.data.State;
 
 public class Bank {
     APIContext ctx;

@@ -1,4 +1,4 @@
-package com.skrrtnick.data;
+package com.skrrtnick.fishncook.data;
 
 import com.epicbot.api.shared.model.Area;
 import com.epicbot.api.shared.model.Tile;

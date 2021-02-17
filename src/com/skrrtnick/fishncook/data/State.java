@@ -1,4 +1,4 @@
-package com.skrrtnick.data;
+package com.skrrtnick.fishncook.data;
 
 public enum State {
     FISHING("Fishing"),

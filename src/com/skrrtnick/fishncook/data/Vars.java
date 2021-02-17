@@ -1,4 +1,4 @@
-package com.skrrtnick.data;
+package com.skrrtnick.fishncook.data;
 
 public class Vars {
     public static long startTime;

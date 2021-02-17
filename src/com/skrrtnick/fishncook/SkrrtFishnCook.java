@@ -1,4 +1,4 @@
-package com.skrrtnick;
+package com.skrrtnick.fishncook;
 
 import com.epicbot.api.os.model.game.GameState;
 import com.epicbot.api.shared.APIContext;
@@ -8,13 +8,13 @@ import com.epicbot.api.shared.script.LoopScript;
 import com.epicbot.api.shared.script.ScriptManifest;
 import com.epicbot.api.shared.util.paint.frame.PaintFrame;
 import com.epicbot.api.shared.util.time.Time;
-import com.skrrtnick.data.Constants;
-import com.skrrtnick.data.Locations;
-import com.skrrtnick.data.State;
-import com.skrrtnick.tasks.Bank;
-import com.skrrtnick.tasks.Cook;
-import com.skrrtnick.tasks.Fish;
-import com.skrrtnick.tasks.Walk;
+import com.skrrtnick.fishncook.data.Constants;
+import com.skrrtnick.fishncook.data.Locations;
+import com.skrrtnick.fishncook.data.State;
+import com.skrrtnick.fishncook.tasks.Fish;
+import com.skrrtnick.fishncook.tasks.Walk;
+import com.skrrtnick.fishncook.tasks.Bank;
+import com.skrrtnick.fishncook.tasks.Cook;
 
 import java.awt.*;
 
