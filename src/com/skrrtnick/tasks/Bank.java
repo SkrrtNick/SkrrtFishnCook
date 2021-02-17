@@ -17,7 +17,7 @@ public class Bank {
         }
         return ctx.bank().open();
     }
-    public void depositAll(){
+    public void depositAll(APIContext ctx){
         if(!ctx.inventory().isEmpty()){
             ctx.bank().depositAllExcept(Constants.SMALL_FISHING_NET);
         }

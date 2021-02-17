@@ -16,23 +16,15 @@ public class Fish {
 
     public boolean hasFishingNet(APIContext ctx) {
 
-        System.out.println(ctx.inventory().getCount(Constants.SMALL_FISHING_NET));
+        return ctx.inventory().contains(Constants.SMALL_FISHING_NET);
 
-        if(ctx.inventory().getCount(Constants.SMALL_FISHING_NET) > 1){
-
-            return ctx.inventory().contains(Constants.SMALL_FISHING_NET);
-
-        }
-        return false;
-
-
-    }
+}
 
     public boolean grabFishingNet(APIContext ctx) {
         SceneObject fishingNet = ctx.objects().query().named("Small fishing net").actions("Take").results().nearest();
         if (fishingNet != null) {
             fishingNet.click();
-            Time.getHumanReaction();
+            Time.sleep(1200);
         }
         return hasFishingNet(ctx);
         }

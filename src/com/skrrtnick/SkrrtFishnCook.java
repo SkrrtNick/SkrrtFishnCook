@@ -37,8 +37,8 @@ public class SkrrtFishnCook extends LoopScript {
     @Override
     public boolean onStart(String... strings) {
         startTime = System.currentTimeMillis();
-        fishingStartLvl = getAPIContext().skills().fishing().getCurrentLevel();
-        cookingStartLvl = getAPIContext().skills().cooking().getCurrentLevel();
+        fishingStartLvl = getAPIContext().skills().fishing().getRealLevel();
+        cookingStartLvl = getAPIContext().skills().cooking().getRealLevel();
 
         return true;
     }
@@ -47,23 +47,33 @@ public class SkrrtFishnCook extends LoopScript {
     protected void onPaint(Graphics2D g, APIContext a) {
         PaintFrame pf = new PaintFrame("Fish n Cook");
         pf.addLine("Runtime", Time.getFormattedRuntime(startTime));
-        //pf.addLine("State:", state.getName());
+        pf.addLine("State:", state.getName());
+        if(cookingCurrentLvl-cookingStartLvl > 0){
+            pf.addLine("Cooking Level: ",cookingCurrentLvl + "(" + (cookingCurrentLvl - cookingStartLvl) + ")");
+        } else {
+            pf.addLine("Cooking Level: ",cookingCurrentLvl);
+        }
+        if(fishingCurrentLvl - fishingStartLvl > 0){
+            pf.addLine("Fishing Level: ",fishingCurrentLvl + "(" + (fishingCurrentLvl - fishingStartLvl) + ")");
+        } else {
+            pf.addLine("Fishing Level: ",fishingCurrentLvl);
+        }
         pf.addLine("Cooked Shrimps: ", cookedShrimp);
         pf.addLine("Cooked Anchovies: ", cookedAnchovies);
         pf.addLine("Burnt Fish: ", burntFish);
-        pf.draw(g, 4, 280, a);
+        pf.draw(g, 4, 204, a);
     }
 
     @Override
     protected void onChatMessage(ChatMessageEvent a) {
-        super.onChatMessage(a);
-        if (a.getMessage().getType() == 0 && a.getMessage().getText().contains("You accidentally burn the shrimps.")) {
+
+        if (a.getMessage().getType() == 105 && a.getMessage().getText().contains("burn")) {
             burntFish++;
         }
-        if (a.getMessage().getType() == 0 && a.getMessage().getText().contains("You successfully cook some shrimps.")) {
+        if (a.getMessage().getType() == 105 && a.getMessage().getText().equals("You successfully cook some shrimps.")) {
             cookedShrimp++;
         }
-        if (a.getMessage().getType() == 0 && a.getMessage().getText().contains("You successfully cook some anchovies.")) {
+        if (a.getMessage().getType() == 105 && a.getMessage().getText().equals("You successfully cook some anchovies.")) {
             cookedAnchovies++;
         }
 
@@ -74,6 +84,16 @@ public class SkrrtFishnCook extends LoopScript {
         APIContext ctx = getAPIContext();
         if (ctx.game().getGameState().is(GameState.LOGGED_IN)) {
 
+            cookingCurrentLvl = getAPIContext().skills().cooking().getRealLevel();
+            fishingCurrentLvl = getAPIContext().skills().fishing().getRealLevel();
+
+
+            if(fishingStartLvl == 0 | cookingStartLvl == 0){
+                fishingStartLvl = getAPIContext().skills().fishing().getRealLevel();
+                cookingStartLvl = getAPIContext().skills().cooking().getRealLevel();
+            }
+
+
 
             if (ctx.dialogues().canContinue()) {
                 Time.getHumanReaction();
@@ -83,11 +103,10 @@ public class SkrrtFishnCook extends LoopScript {
             if (!fish.hasFishingNet(ctx) && Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get())) {
                 fish.grabFishingNet(ctx);
 
-            } else if (!fish.hasFishingNet(ctx) && !Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().getLocation()) && !cook.hasCookedFish(ctx)) {
-                walk.walkToFish(ctx);
+            } else if (!fish.hasFishingNet(ctx) && Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().getLocation()) && !cook.hasCookedFish(ctx)) {
                 fish.grabFishingNet(ctx);
 
-            } else if (!cook.hasCookedFish(ctx) && fish.hasFishingNet(ctx) && !ctx.inventory().isFull() & !ctx.localPlayer().isAnimating()) {
+            } else if (!cook.hasCookedFish(ctx) && !ctx.inventory().isFull() & !ctx.localPlayer().isAnimating()) {
                 walk.walkToFish(ctx);
             }
 
@@ -108,12 +127,12 @@ public class SkrrtFishnCook extends LoopScript {
             }
             if (cook.hasCookedFish(ctx) && !cook.hasRawFish(ctx)) {
                 walk.walkToBank(ctx);
+                System.out.println(Locations.LUMBRIDGE_BANK.getArea().contains(ctx.localPlayer().getLocation()));
 
             }
-            if (Locations.LUMBRIDGE_BANK.getArea().contains(ctx.localPlayer().getLocation()))
-            {
+            if (Locations.LUMBRIDGE_BANK.getArea().contains(ctx.localPlayer().getLocation())) {
                 if (bank.openBank(ctx)) {
-                    bank.depositAll();
+                    bank.depositAll(ctx);
                 }
             } else {
                 return 500;
@@ -121,17 +140,5 @@ public class SkrrtFishnCook extends LoopScript {
         }
         return 800;
 
-
-//        } else if (Constants.STOVE.contains(ctx.localPlayer().getLocation()) && (ctx.inventory().contains(Constants.RAW_ANCHOVIES) || ctx.inventory().contains(Constants.RAW_ANCHOVIES))) {
-//            cook.cookFood(ctx);
-//        }
     }
-
-
-//        if (Constants.FISHING_SPOT.contains(ctx.localPlayer().getLocation())) {
-//            System.out.println("We are at the fishing spot.");
-//            }
-//
-
-
 }

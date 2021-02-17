@@ -12,7 +12,7 @@ public class Walk {
     }
 
     public boolean walkToFish(APIContext ctx) {
-        if (!Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get())) {
+        if (!Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get()) && !ctx.localPlayer().isMoving()) {
             ctx.webWalking().walkTo(Locations.FISHING_SPOT.getArea().getRandomTile());
         }
         return Locations.FISHING_SPOT.getArea().contains(ctx.localPlayer().get());
@@ -31,7 +31,6 @@ public class Walk {
         if (!Locations.STOVE.getArea().contains(ctx.localPlayer().get())) {
             SkrrtFishnCook.state = State.WALKING;
             ctx.walking().walkTo(Locations.STOVE.getArea().getRandomTile());        }
-        System.out.println("Walking to stove ending");
         return Locations.STOVE.getArea().contains(ctx.localPlayer().get());
     }
 

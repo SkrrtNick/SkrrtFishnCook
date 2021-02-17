@@ -21,25 +21,27 @@ public class Cook {
 
     public void cookFood(APIContext ctx){
         SceneObject range = ctx.objects().query().nameMatches("Range").results().nearest();
-        System.out.println(range);
 
         if (range !=null){
             if (range.isVisible() && range.interact("Cook")){
                 Time.sleep(10000, () -> cookingWidgetOpen(ctx));
-                cookingWidget(ctx);
+                cookingWidgetShrimps(ctx);
+                Time.sleep(1200, () -> ctx.localPlayer().isAnimating());
+                cookingWidgetAnchovies(ctx);
                 Time.sleep(1200, () -> ctx.localPlayer().isAnimating());
                 SkrrtFishnCook.state = State.COOKING;
-                System.out.println("Widget:" + cookingWidget(ctx));
             }
-
-
-
-
         }
-
     }
-    public boolean cookingWidget(APIContext ctx){
-        WidgetChild cookingScreen = ctx.widgets().query().visible().group(270).filter(o -> o.getName().equals("Raw shrimps")).results().first();
+    public boolean cookingWidgetShrimps(APIContext ctx){
+        WidgetChild cookingScreen = ctx.widgets().query().visible().group(270).filter(o -> o.getName().contains("hrimps")).results().first();
+        if (cookingScreen != null){
+            return cookingScreen.interact();
+        }
+        return false;
+    }
+    public boolean cookingWidgetAnchovies(APIContext ctx){
+        WidgetChild cookingScreen = ctx.widgets().query().visible().group(270).filter(o -> o.getName().contains("nchovies")).results().first();
         if (cookingScreen != null){
             return cookingScreen.interact();
         }
@@ -54,6 +56,6 @@ public class Cook {
     }
 
     public boolean cookingWidgetOpen(APIContext ctx){
-        return ctx.widgets().query().visible().group(270).filter(o -> o.getName().equals("Raw shrimps")).results().first() != null;
+        return ctx.widgets().query().visible().group(270).filter(o -> o.getName().equals("Shrimps")).results().first()  != null ;
     }
 }
