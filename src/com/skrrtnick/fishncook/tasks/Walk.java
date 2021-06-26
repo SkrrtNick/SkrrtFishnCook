@@ -30,7 +30,7 @@ public class Walk {
         System.out.println("Walking to stove starting");
         if (!Locations.STOVE.getArea().contains(ctx.localPlayer().get())) {
             SkrrtFishnCook.state = State.WALKING;
-            ctx.walking().walkTo(Locations.STOVE.getArea().getRandomTile());        }
+            ctx.webWalking().walkTo(Locations.STOVE.getArea().getRandomTile());        }
         return Locations.STOVE.getArea().contains(ctx.localPlayer().get());
     }
 
